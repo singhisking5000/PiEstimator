@@ -1,31 +1,48 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public class PiEstimator{
-//the following code is just to jog your memory about how labels and buttons work!
-//implement your Pi Estimator as described in the project. You may do it all in main below or you 
-//may implement additional functions if you feel it necessary.
-	
+public class PiEstimator{	
+	public static void main(String[] args) {  
+		PiThread calculator = new PiThread();
+		calculator.running = false;
+		calculator.start();
 
-
-
-
-
-
-public static void main(String[] args) {  
-	    JFrame f=new JFrame("Button Example");  
-	    JButton b=new JButton("Click Here");  
-	    JLabel example = new JLabel(Double.toString(Math.PI));
-	    f.add(example);
-	    f.add(b);  
+	    JFrame f = new JFrame("Pi Estimator!");  
+	    JButton b =new JButton("Resume");  
+	    JLabel estimation = new JLabel("Pi Estimation: " + calculator.p);
+		JLabel trials = new JLabel("Trials: " + calculator.n);
+	    f.add(estimation);
+		f.add(trials);
+		f.add(b);  
 	    f.setSize(300,300);  
 	    f.setLayout(new GridLayout(4, 1));  
-	    f.setVisible(true);      
-		
+		f.setVisible(true);   
+
+		//Upon pressing the button...
+		b.addActionListener(new ActionListener() {
+			public void actionPerformed (ActionEvent e) {
+				if(!calculator.running){
+					b.setText("Pause");
+					synchronized(calculator)
+					{
+						calculator.running = true;
+						// CAUSING ERRORS VVVVV
+						calculator.notify();
+					}
+				} else {
+					b.setText("Resume");
+					System.out.println(calculator.p);
+					calculator.running = false;
+					// calculator.notifyAll();
+				}
+			}
+		});
+
+		while(true) {
+			estimation.setText("Pi Estimation: " + calculator.p);
+			trials.setText("Trials: " + calculator.n);
+		}
 	}  
 }
