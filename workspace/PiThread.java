@@ -3,6 +3,7 @@ public class PiThread extends Thread {
     private int c = 0;
     public int n = 0;
     public double p = 0;
+    public boolean maxed = false;
 
     public void run() {
         while (true) {
@@ -21,15 +22,20 @@ public class PiThread extends Thread {
                 }
             }
 
-            double x = Math.random();
-            double y = Math.random();
-            if ((x * x) + (y * y) < 1) {
-                c++;
-            }
-            n++;
-            if (n%1000 == 0)
+            if (n < Integer.MAX_VALUE)
             {
-                p = 4*((double)c / (double)n);
+                    double x = Math.random();
+                double y = Math.random();
+                if ((x * x) + (y * y) < 1) {
+                    c++;
+                }
+                n++;
+                if (n%1000 == 0)
+                {
+                    p = 4*((double)c / (double)n);
+                }
+            } else {
+                maxed = true;
             }
             // Debug tool
             //System.out.println("C: " + c + " -=- N: " + n + " -=- P: " + p);

@@ -42,7 +42,12 @@ public class PiEstimator{
 
 		while(true) {
 			estimation.setText("Pi Estimation: " + calculator.p);
-			trials.setText("Trials: " + calculator.n);
+			if(calculator.maxed)
+			{
+				trials.setText("Trials: " + calculator.n + " - MAXIMUM TRIALS REACHED");
+			} else {
+				trials.setText("Trials: " + calculator.n);
+			}
 		}
 	}  
 }
